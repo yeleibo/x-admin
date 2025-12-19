@@ -69,6 +69,7 @@ export const layout: RunTimeLayoutConfig = ({
       <Question key="doc" />,
       <SelectLang key="SelectLang" />,
     ],
+    title: '新方位后台应用管理',
     avatarProps: {
       src: initialState?.currentUser?.avatar,
       title: <AvatarName />,
@@ -79,7 +80,6 @@ export const layout: RunTimeLayoutConfig = ({
     waterMarkProps: {
       content: initialState?.currentUser?.name,
     },
-    footerRender: () => <Footer />,
     onPageChange: () => {
       // const { location } = history;
       // // 如果没有登录，重定向到 login
