@@ -1,22 +1,26 @@
-import { DeleteOutlined, PlusOutlined } from '@ant-design/icons';
 import {
-  ActionType,
+  DeleteOutlined,
+  DownloadOutlined,
+  PlusOutlined,
+} from '@ant-design/icons';
+import {
+  type ActionType,
   PageContainer,
   type ProColumns,
   ProTable,
 } from '@ant-design/pro-components';
-import { Button } from 'antd';
-import React, {useRef, useState} from 'react';
+import { Button, message } from 'antd';
+import React, { useRef, useState } from 'react';
+import { GlobalUserService } from '@/pages/globalUser/service';
 import type { GlobalUser, GlobalUserQueryParam } from '@/pages/globalUser/type';
 import { TenantService } from '@/pages/tenant/service';
-import Edit from './Edit';
-import {GlobalUserService} from "@/pages/globalUser/service";
+import GlobalUserEdit from './GlobalUserEdit';
 
 const GlobalUserList: React.FC = () => {
   // 步骤7.2：定义状态
   const [modalOpen, setModalOpen] = useState(false); // 控制弹窗显示
   const [currentRow, setCurrentRow] = useState<GlobalUser>(); // 当前编辑的行数据
-  const actionRef = useRef<ActionType>();
+  const actionRef = useRef<ActionType>(null);
 
   // 第1步：定义表格列
   const columns: ProColumns<GlobalUser>[] = [
@@ -68,7 +72,17 @@ const GlobalUserList: React.FC = () => {
         >
           编辑
         </Button>,
-        <Button key="delete" type="link" danger>
+        <Button
+          key="delete"
+          type="link"
+          danger
+          onClick={() => {
+            GlobalUserService.delete(record.id).then(() => {
+              message.success('删除成功');
+              actionRef.current?.reload();
+            });
+          }}
+        >
           删除
         </Button>,
       ],
@@ -93,7 +107,6 @@ const GlobalUserList: React.FC = () => {
           showQuickJumper: true, // 显示快速跳转
           showTotal: (total) => `总数：${total}`, // 显示总数
         }}
-        rowSelection={{}} // 启用行选择（复选框）
         toolBarRender={() => [
           <Button
             key="add"
@@ -107,27 +120,29 @@ const GlobalUserList: React.FC = () => {
             新增
           </Button>,
           <Button
-            key="delete"
-            danger
-            icon={<DeleteOutlined />}
+            key="download"
+            icon={<DownloadOutlined />}
             onClick={() => {
-              // TODO: 批量删除
+              const link = document.createElement('a');
+              link.href = '/doc/用户模板.xlsx';
+              link.download = '用户模板.xlsx';
+              link.click();
             }}
           >
-            删除
+            下载用户模板
           </Button>,
         ]}
       />
 
       {/* 编辑弹窗 */}
-      <Edit
+      <GlobalUserEdit
         open={modalOpen}
         onOpenChange={setModalOpen}
         currentRow={currentRow}
         onSuccess={() => {
           setCurrentRow(undefined);
           setModalOpen(false);
-          actionRef.current?.reload;
+          actionRef.current?.reload();
         }}
       />
     </PageContainer>

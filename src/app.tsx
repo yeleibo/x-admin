@@ -35,7 +35,7 @@ export async function getInitialState(): Promise<{
       });
       return msg.data;
     } catch (_error) {
-      history.push('/globalUser/list');
+      history.push('/globalUser');
     }
     return undefined;
   };
@@ -86,7 +86,6 @@ export const layout: RunTimeLayoutConfig = ({
       // if (!initialState?.currentUser && location.pathname !== loginPath) {
       //   history.push(loginPath);
       // }
-      history.push('/globalUser/list');
     },
     bgLayoutImgList: [
       {

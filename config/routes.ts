@@ -24,42 +24,21 @@ export default [
   },
   {
     path: '/globalUser',
-    routes: [
-      {
-        name: '用户列表',
-        path: '/globalUser/list',
-        component: './globalUser/GlobalUserList',
-      },
-    ],
+    name: '用户管理',
+    icon: 'user',
+    component: './globalUser/GlobalUserList',
   },
   {
-    path: '/welcome',
-    name: 'welcome',
-    icon: 'smile',
-    component: './Welcome',
+    path: '/tenant',
+    name: '机构管理',
+    icon: 'bank',
+    component: './tenant/TenantList',
   },
   {
-    path: '/admin',
-    name: 'admin',
-    icon: 'crown',
-    access: 'canAdmin',
-    routes: [
-      {
-        path: '/admin',
-        redirect: '/admin/sub-page',
-      },
-      {
-        path: '/admin/sub-page',
-        name: 'sub-page',
-        component: './Admin',
-      },
-    ],
-  },
-  {
-    name: 'list.table-list',
-    icon: 'table',
-    path: '/list',
-    component: './table-list',
+    path: '/app-message',
+    name: 'App信息',
+    icon: 'mobile',
+    component: './app-message/AppMessageList',
   },
   {
     path: '/',

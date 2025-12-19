@@ -1,4 +1,7 @@
 export default {
+  'menu.用户管理': '用户管理',
+  'menu.机构管理': '机构管理',
+  'menu.App信息': 'App信息',
   'menu.welcome': '欢迎',
   'menu.more-blocks': '更多区块',
   'menu.home': '首页',
