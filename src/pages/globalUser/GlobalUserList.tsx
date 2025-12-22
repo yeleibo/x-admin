@@ -9,7 +9,7 @@ import {
   type ProColumns,
   ProTable,
 } from '@ant-design/pro-components';
-import { Button, message } from 'antd';
+import { Button, message, Popconfirm } from 'antd';
 import React, { useRef, useState } from 'react';
 import { GlobalUserService } from '@/pages/globalUser/service';
 import type { GlobalUser, GlobalUserQueryParam } from '@/pages/globalUser/type';
@@ -72,19 +72,25 @@ const GlobalUserList: React.FC = () => {
         >
           编辑
         </Button>,
-        <Button
+        <Popconfirm
           key="delete"
-          type="link"
-          danger
-          onClick={() => {
-            GlobalUserService.delete(record.id).then(() => {
+          title="确定要删除吗？"
+          onConfirm={() => {
+            GlobalUserService.delete(record.id);
               message.success('删除成功');
-              actionRef.current?.reload();
-            });
+              actionRef.current?.reload(); // 刷新表格
           }}
+          okText="确定"
+          cancelText="取消"
+          okButtonProps={{ danger: true }}
         >
-          删除
-        </Button>,
+          <Button
+            type="link"
+            danger
+          >
+            删除
+          </Button>
+        </Popconfirm>,
       ],
     },
   ];
