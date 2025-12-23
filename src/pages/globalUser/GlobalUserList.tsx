@@ -9,8 +9,8 @@ import {
   type ProColumns,
   ProTable,
 } from '@ant-design/pro-components';
-import { Button, message, Popconfirm, Upload } from 'antd';
 import type { UploadProps } from 'antd';
+import { Button, message, Popconfirm, Upload } from 'antd';
 import React, { useRef, useState } from 'react';
 import * as XLSX from 'xlsx';
 import { GlobalUserService } from '@/pages/globalUser/service';
@@ -35,7 +35,9 @@ const GlobalUserList: React.FC = () => {
         const workbook = XLSX.read(data, { type: 'array' });
         const sheetName = workbook.SheetNames[0];
         const sheet = workbook.Sheets[sheetName];
-        const jsonData = XLSX.utils.sheet_to_json<string[]>(sheet, { header: 1 });
+        const jsonData = XLSX.utils.sheet_to_json<string[]>(sheet, {
+          header: 1,
+        });
 
         // 从第二行开始读取（跳过标题行）
         const users: GlobalUser[] = [];
@@ -43,7 +45,6 @@ const GlobalUserList: React.FC = () => {
           const row = jsonData[i];
           if (row && row.length > 0 && row[0]) {
             users.push({
-
               tenantUserLoginName: String(row[0] || ''),
               phoneNumber: String(row[1] || ''),
               tenantId: row[2] ? Number(row[2]) : undefined,
@@ -112,6 +113,7 @@ const GlobalUserList: React.FC = () => {
     {
       title: '操作',
       valueType: 'option',
+      width: 150,
       render: (_, record) => [
         <Button
           key="edit"
@@ -128,17 +130,14 @@ const GlobalUserList: React.FC = () => {
           title="确定要删除吗？"
           onConfirm={async () => {
             await GlobalUserService.delete(record.id!);
-              message.success('删除成功');
-              await actionRef.current?.reload(); // 刷新表格
+            message.success('删除成功');
+            await actionRef.current?.reload(); // 刷新表格
           }}
           okText="确定"
           cancelText="取消"
           okButtonProps={{ danger: true }}
         >
-          <Button
-            type="link"
-            danger
-          >
+          <Button type="link" danger>
             删除
           </Button>
         </Popconfirm>,
