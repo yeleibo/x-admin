@@ -45,7 +45,7 @@ const GlobalUserEdit: React.FC<EditProps> = ({
         if (isEdit) {
           // 编辑模式
           console.log('编辑数据:', { ...currentRow, ...values });
-          await GlobalUserService.edit(formData, currentRow?.id);
+          await GlobalUserService.edit(formData, currentRow?.id!);
 
           message.success('编辑成功');
         } else {

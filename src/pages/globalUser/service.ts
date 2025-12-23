@@ -22,5 +22,13 @@ export const GlobalUserService = {
   delete: (id: number) =>
     request(`/admin/api/GlobalUser/${id}`, {
       method: 'DELETE',
+
+    }),
+
+  //批量添加
+  addUsers: (data: GlobalUser[]) =>
+    request('/admin/api/GlobalUser/addUsers', {
+      method: 'POST',
+      data: data,
     }),
 };

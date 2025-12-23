@@ -1,7 +1,7 @@
 import type { CommonParams } from '@/components/params';
 
 export interface GlobalUser {
-  id: number;
+  id?: number;
   tenantId?: number;
   tenantUserLoginName?: string;
   phoneNumber?: string;
