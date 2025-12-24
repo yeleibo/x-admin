@@ -88,9 +88,15 @@ export const errorConfig: RequestConfig = {
   // 请求拦截器
   requestInterceptors: [
     (config: RequestOptions) => {
-      // 拦截请求配置，进行个性化处理。
-      const url = config?.url?.concat('?token=123');
-      return { ...config, url };
+      // 从 localStorage 获取 token 并添加到请求头
+      const token = localStorage.getItem('token');
+      if (token) {
+        config.headers = {
+          ...config.headers,
+          Authorization: `Bearer ${token}`,
+        };
+      }
+      return config;
     },
   ],
 
@@ -99,6 +105,11 @@ export const errorConfig: RequestConfig = {
     (response) => {
       // 拦截响应数据，进行个性化处理
       const { data } = response as unknown as ResponseStructure;
+
+      // 如果响应中包含 token，保存到 localStorage
+      if (data?.token) {
+        localStorage.setItem('token', data.token);
+      }
 
       if (data?.success === false) {
         message.error('请求失败！');

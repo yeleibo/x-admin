@@ -34,9 +34,7 @@ export async function getInitialState(): Promise<{
         skipErrorHandler: true,
       });
       return msg.data;
-    } catch (_error) {
-      history.push('/globalUser');
-    }
+    } catch (_error) {}
     return undefined;
   };
   // 如果不是登录页面，执行
@@ -81,11 +79,12 @@ export const layout: RunTimeLayoutConfig = ({
       content: initialState?.currentUser?.name,
     },
     onPageChange: () => {
-      // const { location } = history;
-      // // 如果没有登录，重定向到 login
-      // if (!initialState?.currentUser && location.pathname !== loginPath) {
-      //   history.push(loginPath);
-      // }
+      const { location } = history;
+      // 如果没有登录（没有 token），重定向到 login
+      const token = localStorage.getItem('token');
+      if (!token && location.pathname !== loginPath) {
+        history.push(loginPath);
+      }
     },
     bgLayoutImgList: [
       {
@@ -149,7 +148,6 @@ export const layout: RunTimeLayoutConfig = ({
  * 它基于 axios 和 ahooks 的 useRequest 提供了一套统一的网络请求和错误处理方案。
  * @doc https://umijs.org/docs/max/request#配置
  */
-// export const request: RequestConfig = {
-//   baseURL: isDev ? '' : 'https://proapi.azurewebsites.net',
-//   ...errorConfig,
-// };
+export const request: RequestConfig = {
+  ...errorConfig,
+};
