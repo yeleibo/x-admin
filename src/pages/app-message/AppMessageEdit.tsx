@@ -7,8 +7,8 @@ import {
 } from '@ant-design/pro-components';
 import { Col, Form, message, Row } from 'antd';
 import React from 'react';
-import type { AppMessage } from './type';
 import { AppMessageService } from './service';
+import type { AppMessage } from './type';
 
 // 定义组件的 Props 类型
 interface AppMessageEditProps {
@@ -29,13 +29,23 @@ const AppMessageEdit: React.FC<AppMessageEditProps> = ({
   // 判断是编辑模式还是新增模式
   const isEdit = !!currentRow;
 
+  // 根据版本和平台自动生成app名称
+  const updateAppName = () => {
+    const appVersion = form.getFieldValue('appVersion');
+    const platform = form.getFieldValue('platform');
+    if (appVersion !== undefined && platform !== undefined) {
+      const platformName = platform === 0 ? '安卓' : 'iOS';
+      form.setFieldValue('appName', `${platformName}-${appVersion}`);
+    }
+  };
+
   return (
     <ModalForm
       title={isEdit ? '编辑应用' : '新增应用'}
       open={open}
       form={form}
       onOpenChange={onOpenChange}
-      initialValues={currentRow}
+      initialValues={currentRow || { platform: 0 }}
       modalProps={{
         destroyOnClose: true,
       }}
@@ -66,6 +76,9 @@ const AppMessageEdit: React.FC<AppMessageEditProps> = ({
             labelCol={{ span: 6 }}
             wrapperCol={{ span: 18 }}
             rules={[{ required: true, message: '请输入app版本' }]}
+            fieldProps={{
+              onChange: updateAppName,
+            }}
           />
         </Col>
         <Col span={12}>
@@ -93,13 +106,16 @@ const AppMessageEdit: React.FC<AppMessageEditProps> = ({
               { label: 'iOS', value: 1 },
             ]}
             rules={[{ required: true, message: '请选择app平台' }]}
+            fieldProps={{
+              onChange: updateAppName,
+            }}
           />
         </Col>
         <Col span={12}>
           <ProFormSwitch
             name="isFourceUpdate"
             label="是否强制更新"
-            labelCol={{ span: 6 }}
+            labelCol={{ span: 12 }}
             wrapperCol={{ span: 18 }}
           />
         </Col>

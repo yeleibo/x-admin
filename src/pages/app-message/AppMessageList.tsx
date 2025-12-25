@@ -7,9 +7,9 @@ import {
 } from '@ant-design/pro-components';
 import { Button, message } from 'antd';
 import React, { useRef, useState } from 'react';
+import AppMessageEdit from './AppMessageEdit';
 import { AppMessageService } from './service';
 import type { AppMessage, AppMessageQueryParams } from './type';
-import AppMessageEdit from './AppMessageEdit';
 
 const AppMessageList: React.FC = () => {
   const actionRef = useRef<ActionType>(null);
@@ -35,14 +35,14 @@ const AppMessageList: React.FC = () => {
       dataIndex: 'platform',
       width: 80,
       search: false,
-      render: (_, record) => record.platform === 0 ?  'Android':'iOS' ,
+      render: (_, record) => (record.platform === 0 ? 'Android' : 'iOS'),
     },
     {
       title: '是否强制更新',
       dataIndex: 'isFourceUpdate',
       width: 120,
       search: false,
-      render: (_, record) => record.isFourceUpdate ? '是' : '否',
+      render: (_, record) => (record.isFourceUpdate ? '是' : '否'),
     },
     {
       title: '更新消息',
@@ -56,9 +56,9 @@ const AppMessageList: React.FC = () => {
       dataIndex: 'downUrl',
       ellipsis: true,
       search: false,
-      render: (text) => (
-        <a href={text as string} target="_blank" rel="noopener noreferrer">
-          {text}
+      render: (_, record) => (
+        <a href={record.downUrl} target="_blank" rel="noopener noreferrer">
+          {record.downUrl}
         </a>
       ),
     },
@@ -92,7 +92,7 @@ const AppMessageList: React.FC = () => {
             icon={<PlusOutlined />}
             onClick={() => {
               setEditCurrentRow(undefined); // 清空当前行，表示新增模式
-              setEditModalOpen(true);       // 打开弹窗
+              setEditModalOpen(true); // 打开弹窗
             }}
           >
             新增
