@@ -1,0 +1,39 @@
+# 启动命令: docker compose up -d
+# volumes左边是宿主的当前文件的路径，右边是docker容器的路径
+
+services:
+  # Nginx 反向代理
+  nginx:
+    container_name: xfw-nginx
+    image: nginx:latest
+    restart: unless-stopped
+    ports:
+      - 26000:80
+    volumes:
+      - ./nginx/html:/usr/share/nginx/html
+      - ./nginx/conf.d:/etc/nginx/conf.d
+      - ./nginx/logs:/var/log/nginx
+    depends_on:
+      - x-admin
+      - x-api
+
+  # 后台管理前端
+  x-admin:
+    image: crpi-1arm6bubvql3ps3r.cn-beijing.personal.cr.aliyuncs.com/xfw-images/x-admin-web:test
+    container_name: x-admin-web
+    restart: unless-stopped
+
+  # 应用接口
+  x-api:
+    image: crpi-1arm6bubvql3ps3r.cn-beijing.personal.cr.aliyuncs.com/xfw-images/x-admin-api:admin
+    container_name: x-admin-api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+    restart: unless-stopped
+    volumes:
+      - ./app/appsettings.json:/app/appsettings.json
+      - ./app/data:/app/data
+
+
+
+
