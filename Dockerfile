@@ -8,7 +8,7 @@ WORKDIR /app
 # 先拷贝依赖文件（利用 Docker 缓存，依赖不变时跳过安装）
 COPY package.json yarn.lock ./
 # 设置国内镜像源并安装依赖
-RUN yarn config set registry https://registry.npmmirror.com && yarn install
+RUN yarn install
 
 # 再拷贝其他代码
 COPY . .

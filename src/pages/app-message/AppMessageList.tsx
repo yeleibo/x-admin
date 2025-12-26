@@ -75,7 +75,7 @@ const AppMessageList: React.FC = () => {
           const data = await AppMessageService.list(params);
           return {
             total: data.length,
-            data: data,
+            data: data.reverse(),
             success: true,
           };
         }}
@@ -97,13 +97,6 @@ const AppMessageList: React.FC = () => {
           >
             新增
           </Button>,
-          <Button
-            key="reload"
-            icon={<ReloadOutlined />}
-            onClick={() => {
-              actionRef.current?.reload();
-            }}
-          />,
         ]}
         search={{
           labelWidth: 'auto',
