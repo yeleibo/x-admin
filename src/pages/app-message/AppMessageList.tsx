@@ -62,6 +62,25 @@ const AppMessageList: React.FC = () => {
         </a>
       ),
     },
+    {
+      title: '操作',
+      valueType: 'option',
+      width: 80,
+      fixed: 'right',
+      render: (_, record) => [
+        <Button
+          type={'link'}
+          onClick={() => {
+            setEditCurrentRow(record);
+            setEditModalOpen(true);
+          }}
+          key="view"
+          style={{ padding: 0 }}
+        >
+          编辑
+        </Button>,
+      ],
+    },
   ];
 
   return (

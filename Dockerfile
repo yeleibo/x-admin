@@ -33,3 +33,7 @@ CMD ["nginx", "-g", "daemon off;"]
 
 #构建镜像
 # docker buildx build --platform linux/amd64,linux/arm64     -t crpi-1arm6bubvql3ps3r.cn-beijing.personal.cr.aliyuncs.com/xfw-images/x-admin-web:test    --push .
+
+# x-admin更新
+#cd docker/x-admin
+#docker-compose pull && docker-compose down  && docker-compose up -d

@@ -35,7 +35,7 @@ const AppMessageEdit: React.FC<AppMessageEditProps> = ({
     const platform = form.getFieldValue('platform');
     if (appVersion !== undefined && platform !== undefined) {
       const platformName = platform === 0 ? '安卓' : 'iOS';
-      form.setFieldValue('appName', `${platformName}-${appVersion}`);
+      form.setFieldValue('appName', `${platformName}-通用-${appVersion}`);
     }
   };
 
@@ -123,7 +123,7 @@ const AppMessageEdit: React.FC<AppMessageEditProps> = ({
 
       <Row>
         <Col span={24}>
-          <ProFormText
+          <ProFormTextArea
             name="downUrl"
             label="下载地址"
             placeholder="请输入下载地址"

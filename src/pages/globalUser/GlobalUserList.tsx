@@ -202,16 +202,18 @@ const GlobalUserList: React.FC = () => {
       />
 
       {/* 编辑弹窗 */}
-      <GlobalUserEdit
-        open={modalOpen}
-        onOpenChange={setModalOpen}
-        currentRow={currentRow}
-        onSuccess={async () => {
-          setCurrentRow(undefined);
-          setModalOpen(false);
-          await actionRef.current?.reload();
-        }}
-      />
+      {modalOpen && (
+        <GlobalUserEdit
+          open={modalOpen}
+          onOpenChange={setModalOpen}
+          currentRow={currentRow}
+          onSuccess={async () => {
+            setCurrentRow(undefined);
+            setModalOpen(false);
+            await actionRef.current?.reload();
+          }}
+        />
+      )}
     </PageContainer>
   );
 };
