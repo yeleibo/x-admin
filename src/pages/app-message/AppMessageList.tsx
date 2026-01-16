@@ -123,16 +123,18 @@ const AppMessageList: React.FC = () => {
       />
 
       {/* 新增/编辑弹窗 */}
-      <AppMessageEdit
-        open={editModalOpen}
-        onOpenChange={setEditModalOpen}
-        currentRow={editCurrentRow}
-        onSuccess={() => {
-          setEditModalOpen(false);
-          setEditCurrentRow(undefined);
-          actionRef.current?.reload(); // 刷新表格
-        }}
-      />
+      {editModalOpen && (
+        <AppMessageEdit
+          open={editModalOpen}
+          onOpenChange={setEditModalOpen}
+          currentRow={editCurrentRow}
+          onSuccess={() => {
+            setEditModalOpen(false);
+            setEditCurrentRow(undefined);
+            actionRef.current?.reload(); // 刷新表格
+          }}
+        />
+      )}
     </PageContainer>
   );
 };
