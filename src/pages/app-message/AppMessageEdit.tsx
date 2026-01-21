@@ -6,7 +6,7 @@ import {
   ProFormTextArea,
 } from '@ant-design/pro-components';
 import { Col, Form, message, Row } from 'antd';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { AppMessageService } from './service';
 import type { AppMessage } from './type';
 
@@ -45,7 +45,9 @@ const AppMessageEdit: React.FC<AppMessageEditProps> = ({
       open={open}
       form={form}
       onOpenChange={onOpenChange}
-      initialValues={currentRow || { platform: 0 }}
+      initialValues={
+        currentRow || { platform: 0, updateMessage: '修复了一些已知问题' }
+      }
       modalProps={{
         destroyOnClose: true,
       }}
