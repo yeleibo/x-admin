@@ -46,7 +46,12 @@ const AppMessageEdit: React.FC<AppMessageEditProps> = ({
       form={form}
       onOpenChange={onOpenChange}
       initialValues={
-        currentRow || { platform: 0, updateMessage: '修复了一些已知问题' }
+        currentRow || {
+          platform: 0,
+          updateMessage: '修复了一些已知问题',
+          downUrl:
+            'https://api.pgyer.com/apiv2/app/install?_api_key=62037bd03b3bcf180071061f972e865a&buildKey=',
+        }
       }
       modalProps={{
         destroyOnClose: true,
