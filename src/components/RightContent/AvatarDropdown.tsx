@@ -46,24 +46,25 @@ export const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({
   children,
 }) => {
   /**
-   * 退出登录，并且将当前的 url 保存
+   * 退出登录
    */
   const loginOut = async () => {
-    await outLogin();
-    const { search, pathname } = window.location;
-    const urlParams = new URL(window.location.href).searchParams;
-    const searchParams = new URLSearchParams({
-      redirect: pathname + search,
-    });
-    /** 此方法会跳转到 redirect 参数所在的位置 */
-    const redirect = urlParams.get('redirect');
-    // Note: There may be security issues, please note
-    if (window.location.pathname !== '/user/login' && !redirect) {
-      history.replace({
-        pathname: '/user/login',
-        search: searchParams.toString(),
-      });
+    try {
+      // 调用后端登出API
+      await outLogin();
+    } catch (error) {
+      console.error('登出API调用失败:', error);
+      // 即使API失败也要继续清除本地状态
     }
+
+    // 清除本地token和用户信息
+    localStorage.removeItem('token');
+    localStorage.removeItem('userInfo');
+
+    // 直接跳转到登录页
+    history.replace({
+      pathname: '/user/login',
+    });
   };
   const { styles } = useStyles();
 
@@ -104,23 +105,19 @@ export const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({
   }
 
   const menuItems = [
-    ...(menu
-      ? [
-          {
-            key: 'center',
-            icon: <UserOutlined />,
-            label: '个人中心',
-          },
-          {
-            key: 'settings',
-            icon: <SettingOutlined />,
-            label: '个人设置',
-          },
-          {
-            type: 'divider' as const,
-          },
-        ]
-      : []),
+    {
+      key: 'center',
+      icon: <UserOutlined />,
+      label: '个人中心',
+    },
+    {
+      key: 'settings',
+      icon: <SettingOutlined />,
+      label: '个人设置',
+    },
+    {
+      type: 'divider' as const,
+    },
     {
       key: 'logout',
       icon: <LogoutOutlined />,

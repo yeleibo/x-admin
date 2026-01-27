@@ -37,20 +37,32 @@ export async function getInitialState(): Promise<{
     } catch (_error) {}
     return undefined;
   };
-  // 如果不是登录页面，执行
+
+  // 如果不是登录页面，从 localStorage 读取用户信息
   const { location } = history;
-  // if (
-  //   ![loginPath, '/user/register', '/user/register-result'].includes(
-  //     location.pathname,
-  //   )
-  // ) {
-  //   const currentUser = await fetchUserInfo();
-  //   return {
-  //     fetchUserInfo,
-  //     currentUser,
-  //     settings: defaultSettings as Partial<LayoutSettings>,
-  //   };
-  // }
+  if (
+    ![loginPath, '/user/register', '/user/register-result'].includes(
+      location.pathname,
+    )
+  ) {
+    // 临时方案：从 localStorage 读取用户信息
+    const userInfoStr = localStorage.getItem('userInfo');
+    let currentUser: API.CurrentUser | undefined;
+    if (userInfoStr) {
+      try {
+        currentUser = JSON.parse(userInfoStr);
+      } catch (error) {
+        console.error('解析用户信息失败:', error);
+      }
+    }
+
+    return {
+      fetchUserInfo,
+      currentUser,
+      settings: defaultSettings as Partial<LayoutSettings>,
+    };
+  }
+
   return {
     fetchUserInfo,
     settings: defaultSettings as Partial<LayoutSettings>,

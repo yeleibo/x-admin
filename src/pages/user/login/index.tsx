@@ -167,6 +167,24 @@ const Login: React.FC = () => {
       if (msg.token) {
         localStorage.setItem('token', msg.token);
       }
+
+      // 临时方案：创建用户信息对象并保存
+      const userInfo: API.CurrentUser = {
+        name: values.username || '用户',
+        userid: values.username,
+        avatar:
+          'https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png',
+      };
+      localStorage.setItem('userInfo', JSON.stringify(userInfo));
+
+      // 设置到 initialState
+      flushSync(() => {
+        setInitialState((s) => ({
+          ...s,
+          currentUser: userInfo,
+        }));
+      });
+
       const defaultLoginSuccessMessage = intl.formatMessage({
         id: 'pages.login.success',
         defaultMessage: '登录成功！',
