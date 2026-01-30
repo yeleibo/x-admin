@@ -62,6 +62,25 @@ const AppMessageList: React.FC = () => {
         </a>
       ),
     },
+    {
+      title: '操作',
+      valueType: 'option',
+      width: 80,
+      fixed: 'right',
+      render: (_, record) => [
+        <Button
+          type={'link'}
+          onClick={() => {
+            setEditCurrentRow(record);
+            setEditModalOpen(true);
+          }}
+          key="view"
+          style={{ padding: 0 }}
+        >
+          编辑
+        </Button>,
+      ],
+    },
   ];
 
   return (
@@ -75,7 +94,7 @@ const AppMessageList: React.FC = () => {
           const data = await AppMessageService.list(params);
           return {
             total: data.length,
-            data: data,
+            data: data.reverse(),
             success: true,
           };
         }}
@@ -97,13 +116,6 @@ const AppMessageList: React.FC = () => {
           >
             新增
           </Button>,
-          <Button
-            key="reload"
-            icon={<ReloadOutlined />}
-            onClick={() => {
-              actionRef.current?.reload();
-            }}
-          />,
         ]}
         search={{
           labelWidth: 'auto',
@@ -111,16 +123,18 @@ const AppMessageList: React.FC = () => {
       />
 
       {/* 新增/编辑弹窗 */}
-      <AppMessageEdit
-        open={editModalOpen}
-        onOpenChange={setEditModalOpen}
-        currentRow={editCurrentRow}
-        onSuccess={() => {
-          setEditModalOpen(false);
-          setEditCurrentRow(undefined);
-          actionRef.current?.reload(); // 刷新表格
-        }}
-      />
+      {editModalOpen && (
+        <AppMessageEdit
+          open={editModalOpen}
+          onOpenChange={setEditModalOpen}
+          currentRow={editCurrentRow}
+          onSuccess={() => {
+            setEditModalOpen(false);
+            setEditCurrentRow(undefined);
+            actionRef.current?.reload(); // 刷新表格
+          }}
+        />
+      )}
     </PageContainer>
   );
 };

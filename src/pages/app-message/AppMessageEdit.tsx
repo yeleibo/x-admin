@@ -6,7 +6,7 @@ import {
   ProFormTextArea,
 } from '@ant-design/pro-components';
 import { Col, Form, message, Row } from 'antd';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { AppMessageService } from './service';
 import type { AppMessage } from './type';
 
@@ -35,7 +35,7 @@ const AppMessageEdit: React.FC<AppMessageEditProps> = ({
     const platform = form.getFieldValue('platform');
     if (appVersion !== undefined && platform !== undefined) {
       const platformName = platform === 0 ? '安卓' : 'iOS';
-      form.setFieldValue('appName', `${platformName}-${appVersion}`);
+      form.setFieldValue('appName', `${platformName}-通用-${appVersion}`);
     }
   };
 
@@ -45,7 +45,14 @@ const AppMessageEdit: React.FC<AppMessageEditProps> = ({
       open={open}
       form={form}
       onOpenChange={onOpenChange}
-      initialValues={currentRow || { platform: 0 }}
+      initialValues={
+        currentRow || {
+          platform: 0,
+          updateMessage: '修复了一些已知问题',
+          downUrl:
+            'https://api.pgyer.com/apiv2/app/install?_api_key=62037bd03b3bcf180071061f972e865a&buildKey=',
+        }
+      }
       modalProps={{
         destroyOnClose: true,
       }}
@@ -123,7 +130,7 @@ const AppMessageEdit: React.FC<AppMessageEditProps> = ({
 
       <Row>
         <Col span={24}>
-          <ProFormText
+          <ProFormTextArea
             name="downUrl"
             label="下载地址"
             placeholder="请输入下载地址"

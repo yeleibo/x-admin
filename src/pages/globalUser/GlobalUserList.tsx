@@ -84,6 +84,12 @@ const GlobalUserList: React.FC = () => {
       title: '机构名称',
       dataIndex: 'tenantId',
       valueType: 'select',
+      fieldProps: {
+        showSearch: true, // 1. 开启搜索框
+        // 2. 自定义搜索逻辑：不区分大小写，匹配 label
+        filterOption: (input: any, option: any) =>
+          (option?.label ?? '').toLowerCase().includes(input.toLowerCase()),
+      },
       request: async (params) => {
         const data = await TenantService.list(params);
         return data.map((item: any) => {
@@ -103,7 +109,7 @@ const GlobalUserList: React.FC = () => {
       title: '角色',
       dataIndex: 'role',
       search: false,
-      render: (text, record) => (record.role === 0 ? '普通角色' : '管理员'),
+      render: (_text, record) => (record.role === 0 ? '普通角色' : '管理员'),
     },
     {
       title: '备注',
@@ -202,16 +208,18 @@ const GlobalUserList: React.FC = () => {
       />
 
       {/* 编辑弹窗 */}
-      <GlobalUserEdit
-        open={modalOpen}
-        onOpenChange={setModalOpen}
-        currentRow={currentRow}
-        onSuccess={async () => {
-          setCurrentRow(undefined);
-          setModalOpen(false);
-          await actionRef.current?.reload();
-        }}
-      />
+      {modalOpen && (
+        <GlobalUserEdit
+          open={modalOpen}
+          onOpenChange={setModalOpen}
+          currentRow={currentRow}
+          onSuccess={async () => {
+            setCurrentRow(undefined);
+            setModalOpen(false);
+            await actionRef.current?.reload();
+          }}
+        />
+      )}
     </PageContainer>
   );
 };

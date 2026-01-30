@@ -42,10 +42,10 @@ const GlobalUserEdit: React.FC<EditProps> = ({
       }}
       onFinish={async (values) => {
         const formData = await form.validateFields();
-        if (isEdit) {
+        if (currentRow) {
           // 编辑模式
           console.log('编辑数据:', { ...currentRow, ...values });
-          await GlobalUserService.edit(formData, currentRow?.id!);
+          await GlobalUserService.edit(formData, currentRow.id as number);
 
           message.success('编辑成功');
         } else {
@@ -75,6 +75,7 @@ const GlobalUserEdit: React.FC<EditProps> = ({
             label="机构名称"
             labelCol={{ span: 6 }} // 设置标签占据的栅格数
             wrapperCol={{ span: 18 }} // 设置输入控件占据的栅格数
+            showSearch={true}
             request={async () => {
               const params: any = {};
               const data = await TenantService.list(params);

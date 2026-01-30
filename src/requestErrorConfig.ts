@@ -1,5 +1,6 @@
 ﻿import type { RequestOptions } from '@@/plugin-request/request';
 import type { RequestConfig } from '@umijs/max';
+import { history } from '@umijs/max';
 import { message, notification } from 'antd';
 
 // 错误处理方案： 错误类型
@@ -72,29 +73,18 @@ export const errorConfig: RequestConfig = {
       } else if (error.response) {
         // Axios 的错误
         // 请求成功发出且服务器也响应了状态码，但状态代码超出了 2xx 的范围
-        const status = error.response.status;
-
-        // 处理 401 未授权错误
-        if (status === 401) {
-          message.error('登录已过期，请重新登录');
-          // 清除无效的 token
+        if (error.response.status === 401) {
+          // Token 过期或无效，清除 token 并跳转到登录页
           localStorage.removeItem('token');
-          localStorage.removeItem('userInfo');
-          // 跳转到登录页
-          if (window.location.pathname !== '/user/login') {
-            window.location.href = '/user/login';
-          }
+          message.error('登录已过期，请重新登录');
+          history.push('/user/login');
           return;
         }
-
-        // 处理 403 无权限错误
-        if (status === 403) {
-          message.error('您没有权限访问此资源');
-          return;
-        }
-
-        // 其他错误
-        message.error(`Response status:${status}`);
+        message.error(`Response status:${error.response.status}`);
+      } // 处理 403 无权限错误
+      else if (error.response.status === 403) {
+        message.error('您没有权限访问此资源');
+        return;
       } else if (error.request) {
         // 请求已经成功发起，但没有收到响应
         // \`error.request\` 在浏览器中是 XMLHttpRequest 的实例，
